@@ -3,12 +3,14 @@ from .models import TenantUserProfile
 from .serializers import TenantUserProfileSerializer,LoginSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
-from django.contrib.auth import authenticate
-from rest_framework.authtoken.models import Token
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import TokenAuthentication
+from app.authentication import TenantTokenAuthentication
 
 
 class TenantUserProfileViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [TenantTokenAuthentication]
     queryset = TenantUserProfile.objects.all()
     serializer_class = TenantUserProfileSerializer
 
