@@ -1,6 +1,8 @@
-from django.shortcuts import render
+from .models import Client
+from rest_framework import viewsets,permissions
+from .serializers import ClientSerializer
 
-from django.http import HttpResponse
-
-def index(request):
-    return HttpResponse("<h1>Pagina Admin</h1>")
+class ClientViewSet(viewsets.ModelViewSet):
+    queryset = Client.objects.all()
+    permission_classes = [permissions.AllowAny]
+    serializer_class = ClientSerializer

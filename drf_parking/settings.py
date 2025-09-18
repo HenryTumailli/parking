@@ -38,11 +38,12 @@ SHARED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken',
     'app',
     'django_tenants'
 ]
 
-TENANT_APPS = ["client_app"]
+TENANT_APPS = ["tenant_apps.users"]
 
 INSTALLED_APPS = SHARED_APPS + [app for app in TENANT_APPS if app not in SHARED_APPS]
 
