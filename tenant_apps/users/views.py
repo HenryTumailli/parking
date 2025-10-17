@@ -4,8 +4,9 @@ from .serializers import TenantUserProfileSerializer,LoginSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.authentication import TokenAuthentication
 from app.authentication import TenantTokenAuthentication
+from rest_framework.authtoken.models import Token
+from rest_framework import status
 
 
 class TenantUserProfileViewSet(viewsets.ModelViewSet):
@@ -22,3 +23,14 @@ class LoginView(APIView):
         serializer = LoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         return Response(serializer.validated_data)
+
+class LogoutView(APIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [TenantTokenAuthentication]
+
+    def post(self, request):
+        Token.objects.filter(user=request.user).delete()
+        return Response(
+            {"detail": "Sesión cerrada correctamente"},
+            status=status.HTTP_200_OK
+        )

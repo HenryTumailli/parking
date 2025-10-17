@@ -25,8 +25,7 @@ SECRET_KEY = 'django-insecure-bqk23zz6)+x+$$!2qh%ji7n82_i+o_*w(yub1hx_7a#_uc+0wg
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
@@ -37,13 +36,17 @@ SHARED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
     'app',
     'django_tenants'
 ]
 
-TENANT_APPS = ["tenant_apps.users"]
+TENANT_APPS = [
+    'tenant_apps.users',
+    'tenant_apps.groups'
+]
 
 INSTALLED_APPS = SHARED_APPS + [app for app in TENANT_APPS if app not in SHARED_APPS]
 
@@ -51,6 +54,7 @@ MIDDLEWARE = [
     'django_tenants.middleware.main.TenantMainMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -142,3 +146,12 @@ TENANT_MODEL = "app.Client"
 TENANT_DOMAIN_MODEL = "app.Domain"
 
 PUBLIC_SCHEMA_URLCONF = "app.urls"
+
+
+CORS_ALLOW_ALL_ORIGINS = False
+CORS_ALLOW_CREDENTIALS = True
+
+# Lista dinámica de tenants permitidos en dev
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^http://[a-zA-Z0-9_-]+\.localhost:5173$",
+]
