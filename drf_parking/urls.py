@@ -18,5 +18,6 @@ from django.urls import path,include
 
 urlpatterns = [
     path("",include("tenant_apps.users.urls")),
-    path("",include("tenant_apps.groups.urls"))
+    path("",include("tenant_apps.groups.urls")),
+    path("api/",include("tenant_apps.permissions.urls"))
 ]

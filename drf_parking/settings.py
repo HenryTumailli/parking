@@ -45,7 +45,8 @@ SHARED_APPS = [
 
 TENANT_APPS = [
     'tenant_apps.users',
-    'tenant_apps.groups'
+    'tenant_apps.groups',
+    'tenant_apps.permissions',
 ]
 
 INSTALLED_APPS = SHARED_APPS + [app for app in TENANT_APPS if app not in SHARED_APPS]
