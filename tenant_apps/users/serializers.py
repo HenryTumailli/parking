@@ -21,6 +21,17 @@ class TenantUserProfileSerializer(serializers.ModelSerializer):
         fields = ["id", "username", "email", "password", "first_name", "last_name","groups", "tenant", "date_joined", "is_active"]
         read_only_fields = ["id", "date_joined"]
 
+    def validate(self, data):
+        user_data = data.get("user", {})
+        username = user_data.get("username")
+
+        if username and User.objects.filter(username=username).exists():
+            raise serializers.ValidationError({
+                "username": f"El nombre de usuario '{username}' ya existe."
+            })
+
+        return data
+
     def create(self, validated_data):
         user_data = validated_data.pop("user")
         password = validated_data.pop("password")

@@ -11,7 +11,7 @@ class TenantGroupSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TenantGroup
-        fields = ["id", "name", "tenant", "permissions"]
+        fields = ["id", "name", "permissions"]
         read_only_fields = ["id"]
 
     def create(self, validated_data):

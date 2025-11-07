@@ -90,7 +90,7 @@ DATABASES = {
         'ENGINE': 'django_tenants.postgresql_backend',
         'NAME': 'parking',
         'USER': 'postgres',
-        'PASSWORD': 'mysecretpassword',
+        'PASSWORD': 'admin123',
         'HOST': 'localhost',
         'PORT': 5432
     }
@@ -147,6 +147,7 @@ TENANT_DOMAIN_MODEL = "app.Domain"
 
 PUBLIC_SCHEMA_URLCONF = "app.urls"
 
+SHOW_PUBLIC_IF_NO_TENANT_FOUND = True
 
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOW_CREDENTIALS = True
