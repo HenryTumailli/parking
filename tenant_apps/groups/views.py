@@ -11,5 +11,5 @@ from rest_framework import status
 class TenantGroupViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     authentication_classes = [TenantTokenAuthentication]
-    queryset = TenantGroup.objects.all()
+    queryset = TenantGroup.objects.all().order_by('name')
     serializer_class = TenantGroupSerializer
