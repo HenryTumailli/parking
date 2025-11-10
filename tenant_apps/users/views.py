@@ -12,7 +12,7 @@ from rest_framework import status
 class TenantUserProfileViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     authentication_classes = [TenantTokenAuthentication]
-    queryset = TenantUserProfile.objects.all()
+    queryset = TenantUserProfile.objects.all().order_by('user__username')
     serializer_class = TenantUserProfileSerializer
 
 class LoginView(APIView):

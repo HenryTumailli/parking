@@ -4,6 +4,8 @@ from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate
 from .models import TenantUserProfile
 from tenant_apps.groups.models import TenantGroup
+import secrets
+import string
 
 class TenantUserProfileSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source="user.username")
@@ -24,11 +26,24 @@ class TenantUserProfileSerializer(serializers.ModelSerializer):
     def validate(self, data):
         user_data = data.get("user", {})
         username = user_data.get("username")
+        password = data.get("password")
 
-        if username and User.objects.filter(username=username).exists():
-            raise serializers.ValidationError({
-                "username": f"El nombre de usuario '{username}' ya existe."
-            })
+        # Si es update, obtener instancia
+        instance = getattr(self, "instance", None)
+
+        # Verificar si el username ya existe y no es del mismo usuario
+        if username:
+            existing_user = User.objects.filter(username=username).first()
+            if existing_user and (not instance or existing_user != instance.user):
+                raise serializers.ValidationError({
+                    "username": f"El nombre de usuario '{username}' ya existe."
+                })
+
+        # Generar contraseña aleatoria si no se envía
+        if not password:
+            alphabet = string.ascii_letters + string.digits
+            password = ''.join(secrets.choice(alphabet) for _ in range(10))
+            data["password"] = password
 
         return data
 
